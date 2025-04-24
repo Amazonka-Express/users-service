@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  users-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "5156:80"
+      - "7010:443"
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=usersdb;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+    networks:
+      - usersnet
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: usersdb
+    ports:
+      - "5432:5432"
+    networks:
+      - usersnet
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+networks:
+  usersnet:
+
+volumes:
+  postgres-data:
