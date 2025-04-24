@@ -1,9 +1,12 @@
+using Api.Extensions;
 using Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+
+builder.Services.ConfigureDbContext();
 
 var app = builder.Build();
 
