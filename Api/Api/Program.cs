@@ -8,6 +8,7 @@ builder.Services.AddGrpc();
 
 builder.Services.ConfigureDbContext();
 builder.Services.ConfigureLogger(builder.Configuration);
+builder.Services.ConfigureExceptionMiddleware();
 
 var app = builder.Build();
 

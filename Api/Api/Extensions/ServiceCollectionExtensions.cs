@@ -1,3 +1,4 @@
+using Api.Middleware;
 using Core.Logger;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -44,5 +45,14 @@ public static class ServiceCollectionExtensions
             );
 
         services.AddSingleton<ILoggerManager, LoggerManager>();
+    }
+
+    public static void ConfigureExceptionMiddleware(this IServiceCollection services)
+    {
+        services.AddTransient<ExceptionInterceptor>();
+        services.AddGrpc(options =>
+        {
+            options.Interceptors.Add<ExceptionInterceptor>();
+        });
     }
 }

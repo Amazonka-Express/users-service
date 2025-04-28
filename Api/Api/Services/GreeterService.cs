@@ -1,4 +1,5 @@
 using Api;
+using Core.Exceptions.Base;
 using Core.Logger;
 using Grpc.Core;
 
