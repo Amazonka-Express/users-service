@@ -1,19 +1,21 @@
 using Api;
+using Core.Logger;
 using Grpc.Core;
 
 namespace Api.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {
-    private readonly ILogger<GreeterService> _logger;
+    private readonly ILoggerManager _logger;
 
-    public GreeterService(ILogger<GreeterService> logger)
+    public GreeterService(ILoggerManager logger)
     {
         _logger = logger;
     }
 
     public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
     {
+        _logger.LogInfo($"Saying hello to {request.Name}");
         return Task.FromResult(new HelloReply { Message = "Hello " + request.Name });
     }
 }

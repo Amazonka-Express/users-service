@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 
 builder.Services.ConfigureDbContext();
+builder.Services.ConfigureLogger(builder.Configuration);
 
 var app = builder.Build();
 
