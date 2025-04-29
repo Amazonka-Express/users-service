@@ -9,6 +9,9 @@ builder.Services.AddGrpc();
 builder.Services.ConfigureDbContext();
 builder.Services.ConfigureLogger(builder.Configuration);
 builder.Services.ConfigureExceptionMiddleware();
+builder.Services.ConfigureRepositoryWrapper();
+builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureAutoMapper();
 
 var app = builder.Build();
 

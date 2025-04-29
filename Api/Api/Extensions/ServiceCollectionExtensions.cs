@@ -2,7 +2,11 @@ using Api.Middleware;
 using Core.Logger;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using UsersService.Core.Domain.Repositories;
+using UsersService.Core.Services.Abstractions.Services;
+using UsersService.Infrastructure.Persistence.Repositories;
 using UsersService.Infrastructure.Persistence.RepositoryContext;
+using UsersService.Infrastructure.Services;
 
 namespace Api.Extensions;
 
@@ -54,5 +58,20 @@ public static class ServiceCollectionExtensions
         {
             options.Interceptors.Add<ExceptionInterceptor>();
         });
+    }
+
+    public static void ConfigureServiceManager(this IServiceCollection services)
+    {
+        services.AddScoped<IServiceManager, ServiceManager>();
+    }
+
+    public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+    {
+        services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+    }
+
+    public static void ConfigureAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     }
 }
