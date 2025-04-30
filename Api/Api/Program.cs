@@ -7,11 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 
 builder.Services.ConfigureDbContext();
+builder.Services.ConfigureLogger(builder.Configuration);
+builder.Services.ConfigureExceptionMiddleware();
+builder.Services.ConfigureRepositoryWrapper();
+builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureAutoMapper();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();
+app.MapGrpcService<UserRpcService>();
 app.MapGet(
     "/",
     () =>

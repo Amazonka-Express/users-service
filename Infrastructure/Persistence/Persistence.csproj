@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Logger\Logger.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Logger\Logger.csproj" />
     <ProjectReference Include="..\..\Core\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Core\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\..\Core\Exceptions\Exceptions.csproj" />
@@ -16,6 +16,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mappers/" />
+    <Folder Include="Repositories/" />
   </ItemGroup>
 
   <PropertyGroup>
