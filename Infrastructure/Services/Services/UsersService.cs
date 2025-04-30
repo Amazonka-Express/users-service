@@ -1,6 +1,9 @@
 using AutoMapper;
+using Core.Exceptions.Users;
 using Core.Logger;
+using Microsoft.EntityFrameworkCore;
 using UsersService.Core.Contracts.Dto;
+using UsersService.Core.Domain.Entities;
 using UsersService.Core.Domain.Repositories;
 using UsersService.Core.Services.Abstractions.Services;
 
@@ -11,9 +14,12 @@ public class UsersService : ServiceBase, IUsersService
     public UsersService(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerManager logger)
         : base(repositoryWrapper, mapper, logger) { }
 
-    public Task<UserDto> CreateUser(UserDto user)
+    public async Task<UserDto> CreateUser(UserDto userDto)
     {
-        throw new NotImplementedException();
+        var user = mapper.Map<User>(userDto);
+        repositoryWrapper.Users.Create(user);
+        await repositoryWrapper.Save();
+        return mapper.Map<UserDto>(user);
     }
 
     public Task DeleteUser(UserDto user)
@@ -21,18 +27,37 @@ public class UsersService : ServiceBase, IUsersService
         throw new NotImplementedException();
     }
 
-    public Task<UserDto> GetUserByEmail(string email)
+    public async Task<UserDto> GetUserByEmail(string email)
     {
-        throw new NotImplementedException();
+        logger.LogInfo(nameof(GetUserByEmail), email);
+        var user =
+            await repositoryWrapper
+                .Users.FindByCondition(x => x.Email == email)
+                .FirstOrDefaultAsync() ?? throw new UserNotFoundException(email);
+
+        return mapper.Map<UserDto>(user);
     }
 
-    public Task<UserDto> GetUserById(int id)
+    public async Task<UserDto> GetUserById(Guid id)
     {
-        throw new NotImplementedException();
+        logger.LogInfo(nameof(GetUserById), id.ToString());
+        var user =
+            await repositoryWrapper
+                .Users.FindByCondition(x => x.Id.Equals(id))
+                .FirstOrDefaultAsync() ?? throw new UserNotFoundException(id.ToString());
+
+        return mapper.Map<UserDto>(user);
     }
 
-    public Task UpdateUser(UserDto user)
+    public async Task<Guid> UpdateUser(UserDto userDto)
     {
-        throw new NotImplementedException();
+        var foundUser =
+            await GetUserByEmail(userDto.Email) ?? throw new UserNotFoundException(userDto.Email);
+
+        userDto = mapper.Map(userDto, foundUser);
+        var userToUpdate = mapper.Map<User>(userDto);
+        repositoryWrapper.Users.Update(userToUpdate);
+        await repositoryWrapper.Save();
+        return userToUpdate.Id;
     }
 }

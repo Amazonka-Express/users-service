@@ -34,14 +34,12 @@ namespace Api.Middleware
         {
             if (exception is BaseException baseException)
             {
-                Console.WriteLine("testttt midd exc my");
                 logger.LogError($"{baseException.StatusCode}: {exception.Message}");
                 throw new RpcException(new Status(baseException.StatusCode, baseException.Message));
             }
             else
             {
                 logger.LogError($"{exception.Message}");
-                Console.WriteLine("testttt midd exc lol");
                 throw new RpcException(new Status(StatusCode.Internal, exception.Message));
             }
         }
