@@ -30,4 +30,30 @@ public class UserRpcService : UserService.UserService.UserServiceBase
         var user = await this.serviceManager.UserService.GetUserByEmail(request.Email);
         return RpcMapper.Map(user);
     }
+
+    public override async Task<AuthenticateWithGoogleResponse> AuthenticateWithGoogle(
+        AuthenticateWithGoogleRequest request,
+        ServerCallContext context
+    )
+    {
+        if (
+            request == null
+            || request.User == null
+            || string.IsNullOrWhiteSpace(request.User.Email)
+        )
+            throw new BadRequestException(
+                ErrorMessages.InvalidArgument,
+                nameof(request.User.Email)
+            );
+
+        var (user, isNewUser) = await this.serviceManager.UserService.TryUpdateUser(
+            RpcMapper.Map(request.User)
+        );
+
+        return new AuthenticateWithGoogleResponse()
+        {
+            User = RpcMapper.Map(user),
+            IsNewUser = isNewUser,
+        };
+    }
 }

@@ -8,6 +8,16 @@ public class UsersMapper : AutoMapper.Profile
     public UsersMapper()
     {
         CreateMap<User, UserDto>();
-        CreateMap<UserDto, User>();
+        CreateMap<UserDto, User>()
+            .ForMember(
+                x => x.FirstName,
+                opt => opt.Condition(src => !string.IsNullOrWhiteSpace(src.FirstName))
+            )
+            .ForMember(
+                x => x.LastName,
+                opt => opt.Condition(src => !string.IsNullOrWhiteSpace(src.LastName))
+            )
+            .ForMember(dest => dest.Role, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
     }
 }

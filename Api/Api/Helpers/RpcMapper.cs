@@ -14,4 +14,14 @@ internal static class RpcMapper
             Role = user.Role.ToString(),
         };
     }
+
+    public static UserDto Map(this User.UserMetadata user)
+    {
+        return new UserDto()
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+        };
+    }
 }

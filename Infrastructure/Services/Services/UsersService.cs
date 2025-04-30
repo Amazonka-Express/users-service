@@ -49,15 +49,33 @@ public class UsersService : ServiceBase, IUsersService
         return mapper.Map<UserDto>(user);
     }
 
-    public async Task<Guid> UpdateUser(UserDto userDto)
+    public async Task<(UserDto user, bool isNewUser)> TryUpdateUser(UserDto userDto)
     {
         var foundUser =
-            await GetUserByEmail(userDto.Email) ?? throw new UserNotFoundException(userDto.Email);
+            await repositoryWrapper
+                .Users.FindByCondition(x => x.Email == userDto.Email)
+                .FirstOrDefaultAsync()
+            ?? throw new AccountCreationRestrictedException(userDto.Email);
 
-        userDto = mapper.Map(userDto, foundUser);
-        var userToUpdate = mapper.Map<User>(userDto);
-        repositoryWrapper.Users.Update(userToUpdate);
-        await repositoryWrapper.Save();
-        return userToUpdate.Id;
+        var isNewUser =
+            string.IsNullOrWhiteSpace(foundUser.FirstName)
+            || string.IsNullOrWhiteSpace(foundUser.LastName);
+
+        User updatedUser;
+        if (
+            !string.IsNullOrWhiteSpace(userDto.FirstName)
+                && foundUser.FirstName != userDto.FirstName
+            || !string.IsNullOrWhiteSpace(userDto.LastName)
+                && foundUser.LastName != userDto.LastName
+        )
+        {
+            updatedUser = mapper.Map(userDto, foundUser);
+            repositoryWrapper.Users.Update(updatedUser);
+            await repositoryWrapper.Save();
+        }
+        else
+            updatedUser = foundUser;
+
+        return (mapper.Map<UserDto>(updatedUser), isNewUser);
     }
 }
