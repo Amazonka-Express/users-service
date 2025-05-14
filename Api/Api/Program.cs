@@ -15,6 +15,8 @@ builder.Services.ConfigureAutoMapper();
 
 var app = builder.Build();
 
+app.Services.InitDatabase();
+
 // Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();
 app.MapGrpcService<UserRpcService>();

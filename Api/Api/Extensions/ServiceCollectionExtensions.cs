@@ -74,4 +74,11 @@ public static class ServiceCollectionExtensions
     {
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     }
+
+    public static void InitDatabase(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<RepositoryContext>();
+        context.Database.Migrate();
+    }
 }
