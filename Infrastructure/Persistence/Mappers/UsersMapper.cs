@@ -19,5 +19,10 @@ public class UsersMapper : AutoMapper.Profile
             )
             .ForMember(dest => dest.Role, opt => opt.Ignore())
             .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+        CreateMap<UserRole, UserRoleDto>()
+            .ConvertUsing(src => Enum.Parse<UserRoleDto>(src.ToString()));
+        CreateMap<UserRoleDto, UserRole>()
+            .ConvertUsing(src => Enum.Parse<UserRole>(src.ToString()));
     }
 }

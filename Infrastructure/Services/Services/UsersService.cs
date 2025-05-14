@@ -14,17 +14,34 @@ public class UsersService : ServiceBase, IUsersService
     public UsersService(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILoggerManager logger)
         : base(repositoryWrapper, mapper, logger) { }
 
-    public async Task<UserDto> CreateUser(UserDto userDto)
+    public async Task<UserDto?> CreateUser(UserDto userDto)
     {
-        var user = mapper.Map<User>(userDto);
+        var user = await repositoryWrapper
+            .Users.FindByCondition(x => x.Email == userDto.Email)
+            .FirstOrDefaultAsync();
+
+        if (user != null)
+            return null;
+
+        user = mapper.Map<User>(userDto);
+        user.Role = mapper.Map<UserRole>(userDto.Role);
         repositoryWrapper.Users.Create(user);
         await repositoryWrapper.Save();
         return mapper.Map<UserDto>(user);
     }
 
-    public Task DeleteUser(UserDto user)
+    public async Task<bool> DeleteUser(string email)
     {
-        throw new NotImplementedException();
+        var user = await repositoryWrapper
+            .Users.FindByCondition(x => x.Email == email)
+            .FirstOrDefaultAsync();
+
+        if (user == null)
+            return false;
+
+        repositoryWrapper.Users.Delete(user);
+        await repositoryWrapper.Save();
+        return true;
     }
 
     public async Task<UserDto> GetUserByEmail(string email)

@@ -56,4 +56,22 @@ public class UserRpcService : UserService.UserService.UserServiceBase
             IsNewUser = isNewUser,
         };
     }
+
+    public override async Task<CreateUserResponse> Create(
+        User.User request,
+        ServerCallContext context
+    )
+    {
+        var success = await this.serviceManager.UserService.CreateUser(RpcMapper.Map(request));
+        return new CreateUserResponse() { Success = success != null };
+    }
+
+    public override async Task<DeleteUserResponse> Delete(
+        DeleteUserRequest request,
+        ServerCallContext context
+    )
+    {
+        var success = await this.serviceManager.UserService.DeleteUser(request.Email);
+        return new DeleteUserResponse() { Success = success };
+    }
 }

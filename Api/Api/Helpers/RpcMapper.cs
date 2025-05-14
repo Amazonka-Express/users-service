@@ -15,6 +15,17 @@ internal static class RpcMapper
         };
     }
 
+    public static UserDto Map(this User.User user)
+    {
+        return new UserDto()
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Role = Enum.Parse<UserRoleDto>(user.Role),
+        };
+    }
+
     public static UserDto Map(this User.UserMetadata user)
     {
         return new UserDto()
