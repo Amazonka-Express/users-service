@@ -6,7 +6,7 @@ services:
     ports:
       - "5156:80"
       - "7010:443"
-      - "5000:5000"
+      - "5001:5001"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ERSMS_POSTGRESQL_CONNECTION_STRING=Host=postgres;Port=5432;Database=usersdb;Username=postgres;Password=postgres
