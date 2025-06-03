@@ -39,6 +39,12 @@ public class RepositoryContext : DbContext
                     },
                     new User
                     {
+                        Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5"),
+                        Email = "jkowiesk@gmail.com",
+                        Role = UserRole.Driver,
+                    },
+                    new User
+                    {
                         Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaad"),
                         Email = "karol.orzechowski1337@gmail.com",
                         Role = UserRole.Admin,
@@ -47,6 +53,12 @@ public class RepositoryContext : DbContext
                     {
                         Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaae"),
                         Email = "waceg.qtasiks@gmail.com",
+                        Role = UserRole.Admin,
+                    },
+                    new User
+                    {
+                        Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf"),
+                        Email = "tomsongra10201@gmail.com",
                         Role = UserRole.Admin,
                     },
                 ]

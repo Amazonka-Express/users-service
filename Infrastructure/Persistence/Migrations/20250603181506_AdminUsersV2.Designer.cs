@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UsersService.Infrastructure.Persistence.RepositoryContext;
@@ -11,9 +12,11 @@ using UsersService.Infrastructure.Persistence.RepositoryContext;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250603181506_AdminUsersV2")]
+    partial class AdminUsersV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,12 +66,6 @@ namespace Persistence.Migrations
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaac"),
                             Email = "kubakowieski5151@gmail.com",
                             Role = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa5"),
-                            Email = "jkowiesk@gmail.com",
-                            Role = 1
                         },
                         new
                         {
