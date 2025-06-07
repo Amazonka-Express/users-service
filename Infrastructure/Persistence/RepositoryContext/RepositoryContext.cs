@@ -35,7 +35,7 @@ public class RepositoryContext : DbContext
                     {
                         Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaac"),
                         Email = "kubakowieski5151@gmail.com",
-                        Role = UserRole.Admin,
+                        Role = UserRole.Worker,
                     },
                     new User
                     {
